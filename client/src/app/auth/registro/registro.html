@@ -1,0 +1,157 @@
+<div class="page-container">
+    <div class="slogan">
+        <p id="text">Un lugar para compartir tus meriendas</p>
+    </div>
+    <div id="registro">
+        <div class="form-container">
+             <div class="form-wrapper">
+                <div id="titulo-app">MediaTu</div>
+            </div>
+            <h1>Registro</h1>
+            <form [formGroup]="formulario" (ngSubmit)="accion()">
+                <div>
+                    <label for="email">Email:</label>
+                    <input id="email" formControlName="email" type="email" />
+                    
+                    @if(email?.touched && email?.hasError('required')) {
+                        <p style="color: red;">El email es obligatorio</p>
+                    }
+                    @if(email?.touched && email?.hasError('email')) {
+                        <p style="color: red;">Ingrese un email válido</p>
+                    }
+                </div>
+        
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input id="nombre" formControlName="nombre" type="text" />
+    
+                    @if(nombre?.touched && nombre?.hasError('required')) {
+                        <p style="color: red;">El nombre es obligatorio</p>
+                    }
+                    @if(nombre?.touched && nombre?.hasError('pattern')) {
+                        <p style="color: red;">Solo se permiten letras</p>
+                    }
+                    @if(nombre?.touched && nombre?.hasError('minlength')) {
+                        <p style="color: red;">Mínimo 2 caracteres</p>
+                    }
+                    @if(nombre?.touched && nombre?.hasError('maxlength')) {
+                        <p style="color: red;">Máximo 20 caracteres</p>
+                    }
+                </div>
+        
+                <div>
+                    <label for="apellido">Apellido:</label>
+                    <input id="apellido" formControlName="apellido" type="text" />
+    
+                    @if(apellido?.touched && apellido?.hasError('required')) {
+                        <p style="color: red;">El apellido es obligatorio</p>
+                    }
+                    @if(apellido?.touched && apellido?.hasError('pattern')) {
+                        <p style="color: red;">Solo se permiten letras</p>
+                    }
+                    @if(apellido?.touched && apellido?.hasError('minlength')) {
+                        <p style="color: red;">Mínimo 2 caracteres</p>
+                    }
+                    @if(apellido?.touched && apellido?.hasError('maxlength')) {
+                        <p style="color: red;">Máximo 20 caracteres</p>
+                    }
+                </div>  
+                
+                <div>
+                    <label for="nombreUsuario">Nombre de Usuario:</label>
+                    <input id="nombreUsuario" formControlName="nombreUsuario" type="text" />
+                    @if(nombreUsuario?.touched && nombreUsuario?.hasError('required')) {
+                        <p style="color: red;">El nombre de usuario es obligatorio</p>
+                    }
+                    @if(nombreUsuario?.touched && nombreUsuario?.hasError('minlength')) {
+                        <p style="color: red;">Mínimo 2 caracteres</p>
+                    }
+                    @if(nombreUsuario?.touched && nombreUsuario?.hasError('maxlength')) {
+                        <p style="color: red;">Máximo 15 caracteres</p>
+                    }
+                    @if(nombreUsuario?.touched && nombreUsuario?.hasError('pattern')) {
+                        <p style="color: red;">Ingrese un usuario valido (sin espacios)</p>
+                    }
+                </div>
+
+                <div>
+                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                    <input id="fechaNacimiento" formControlName="fechaNacimiento" type="date" appFechaEdad/>
+
+                    @if(fechaNacimiento?.touched && fechaNacimiento?.hasError('required')) {
+                        <p style="color: red;">La fecha de nacimiento es obligatoria</p>
+                    }
+
+                    @if(fechaNacimiento?.touched && fechaNacimiento?.hasError('fechaFutura')) {
+                        <p style="color: red;">La fecha no puede ser futura</p>
+                    }
+                    @if(fechaNacimiento?.touched && fechaNacimiento?.hasError('menorDeEdad')) {
+                        <p style="color: red;">Debés ser mayor de 18 años para registrarte</p>
+                    }
+                </div>
+                    
+                <div>
+                    <label for="password">Password:</label>
+                    <input id="password" formControlName="password" type="password" />
+    
+                    @if(password?.touched && password?.hasError('required')) {
+                       <p style="color: red;">La contraseña es obligatoria</p>
+                    }
+                    @if(password?.touched && password?.hasError('minlength')) {
+                        <p style="color: red;">Mínimo 6 caracteres</p>
+                    }
+                     @if(password?.touched && password?.hasError('maxlength')) {
+                        <p style="color: red;">Maximo 8 caracteres </p>
+                    }
+                    @if(password?.touched && password?.hasError('pattern')) {
+                        <p style="color: red;">La contraseña debe contener al menos una letra mayúscula y un número</p>
+                    }
+                </div>
+
+    
+                <div>
+                    <label for="confirmPassword">Confirmar Password:</label>
+                    <input id="confirmPassword" formControlName="confirmPassword" type="password" />
+    
+                    @if(confirmPassword?.touched && confirmPassword?.hasError('required')) {
+                       <p style="color: red;">La confirmación de contraseña es obligatoria</p>
+                    }
+                    @if(confirmPassword?.touched && confirmPassword?.hasError('mismatch')) {
+                        <p style="color: red;">Las contraseñas no coinciden</p>
+                    }
+                </div>
+                
+                <div>   
+                    <label for="descripcion">Descripción:</label>
+                    <input id="descripcion" formControlName="descripcion" type="text" />
+                </div>
+                
+                <div>        
+                    <label for="imagen">Imagen</label>
+                    <input type="file" accept="image/*" 
+                    appSoloImagen
+                    (imagenValida)="onFileChange($event)"
+                    (imagenInvalida)="errorImagen = $event">
+                </div>
+                @if(errorImagen) {
+                    <span style="color: red;">{{ errorImagen }}</span>
+                }
+                <button type="submit">Registrar</button>
+            </form>
+    
+            @if(mostrarModal) {
+                <div class="vista" (click)="cerrarModal()">
+                    <div class="modal" (click)="$event.stopPropagation()">
+                    <p>{{ mensajeModal }}</p>
+                    <button (click)="cerrarModal()">Cerrar</button>
+                    </div>
+                </div>
+            }
+            
+            <button routerLink="/login">Iniciar Sesión</button>
+    
+    
+        </div>
+    </div>
+        
+</div>

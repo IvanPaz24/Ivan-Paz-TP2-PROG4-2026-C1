@@ -1,0 +1,24 @@
+:root {
+    --beige: #f5efe6;
+    --beige-dark: #e8ddd0;
+    --marron-claro: #c8a882;
+    --marron: #a07850;
+    --marron-oscuro: #6b4f2f;
+    --texto: #3d2b1a;
+    --texto-suave: #7a5c3e;
+    --blanco-calido: #fdf8f2;
+    --error: #c0392b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--beige);
+    color: var(--texto);
+    font-family: 'Georgia', serif;
+}
+

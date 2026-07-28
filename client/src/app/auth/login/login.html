@@ -1,0 +1,64 @@
+<div class="page-container">
+    <div class="slogan">
+        <p id="text">Un lugar para compartir tus meriendas</p>
+    </div>
+    <div id="login">
+        <div class="form-container">
+    
+            <div class="form-wrapper">
+                <div id="titulo-app">MediaTu</div>
+            </div>
+    
+            <h1>Login</h1>
+    
+            <form [formGroup]="formulario" (ngSubmit)="accion()" >
+                <div>
+                    <label for="usuario">Email o nombre de usuario:</label>
+                    <input id="usuario" formControlName="usuario" type="email" />
+    
+                    @if(usuario?.touched && usuario?.hasError('required')) {
+                        <p style="color: red;">El email o nombre de usuario es obligatorio</p>
+                    }
+    
+                    @if(usuario?.touched && usuario?.hasError('pattern')) {
+                        <p style="color: red;">Ingrese un email válido o un nombre de usuario</p>
+                    }
+                </div>
+            
+                <div>
+                    <label for="password">Password:</label>
+                    <input id="pwd_field" formControlName="password" type="password" >
+    
+                    @if(password?.touched && password?.hasError('required')) {
+                       <p style="color: red;">La contraseña es obligatoria</p>
+                    }
+                    @if(password?.touched && password?.hasError('minlength')) {
+                        <p style="color: red;">Mínimo 6 caracteres</p>
+                    }
+                     @if(password?.touched && password?.hasError('maxlength')) {
+                        <p style="color: red;">Maximo 8 caracteres </p>
+                    }
+                    @if(password?.touched && password?.hasError('pattern')) {
+                        <p style="color: red;">La contraseña debe contener al menos una letra mayúscula y un número</p>
+                    }
+                </div>
+                
+                
+                
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+    
+    
+            @if(mostrarModal) {
+                <div class="vista" (click)="cerrarModal()">
+                    <div class="modal" (click)="$event.stopPropagation()">
+                        <p>{{ mensajeModal }}</p>
+                        <button (click)="cerrarModal()">Cerrar</button>
+                    </div>
+                </div>
+            }
+    
+            <button routerLink="/registro">Registrarse</button>
+        </div>
+    </div>
+</div>

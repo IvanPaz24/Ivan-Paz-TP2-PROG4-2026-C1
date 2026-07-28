@@ -1,0 +1,25 @@
+<div>
+  
+  <!-- @if (cargando) {
+    <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#f5f0e8;">
+      <span class="loader"></span>
+    </div>
+    
+    <div style="position:fixed; top:0; left:0; width:100%; height:100vh; display:flex; justify-content:center; align-items:center; background:red; z-index:9999;">
+      <h1 style="color:white">CARGANDO</h1>
+    </div>
+    
+  }  -->
+
+  @if(mostrarModal) {
+    <div class="vista">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <p>{{ mensajeModal }}</p>
+        <button (click)="modalService.ejecutar('renovar')">Extender sesión</button>
+        <button (click)="modalService.ejecutar('cerrar')">Cerrar sesión</button>
+      </div>
+    </div>
+  }
+  <router-outlet></router-outlet>  
+  
+</div>

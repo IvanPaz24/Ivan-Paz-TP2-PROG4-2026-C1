@@ -1,0 +1,120 @@
+<div class="page-container">
+
+  @if (cargando) {
+    <div class="pantalla-carga">
+      <span class="loader"></span>
+    </div>
+    
+  }@else{
+    <nav class="pub-nav">
+      <button routerLink="/miPerfil">
+        <img src="mi-perfil.png" alt="Perfil" width="35px">
+         <span>Mi perfil</span>
+      </button>
+
+      @if(esAdmin){
+        <button routerLink="/dashboard/usuarios">
+          <img src="usuarios.png" alt="Dashboard-usuarios" width="35px">
+          <span>Usuarios</span>
+        </button>
+  
+        <button routerLink="/dashboard/estadisticas">
+          <img src="estadisticas.png" alt="Dashboard-estadisticas" width="35px"> 
+          <span>Estadísticas</span>
+        </button>
+      }
+
+      <button (click)="salir()" class="btn-salir">
+        <img src="salir.png" alt="Salir" width="35px">
+        <span>Salir</span>
+      </button>
+    </nav>
+    
+    <div class="main">
+      <div class="publicaciones-container">
+
+          <h2 class="mediatu-title">Mediatu <img src="croissant.png" width="35px"></h2>
+          <div class="page-top">
+            <div class="form-container">
+              <h1>Haz tu propia publicacion</h1>
+              <form [formGroup]="formulario" (ngSubmit)="accion()">
+                <label for="titulo">Titulo</label>
+                <input formControlName="titulo" type="text">
+                @if (formulario.get('titulo')?.touched && formulario.get('titulo')?.hasError('required')) {
+                  <span style="color: red;">El título es obligatorio</span>
+                }
+                @if (formulario.get('titulo')?.touched && formulario.get('titulo')?.hasError('pattern')) {
+                  <span style="color: red;">El título no puede ser solo espacios</span>
+                }
+
+                
+                <label for="descripcion">Descripcion</label>
+                <input formControlName="descripcion" type="text">
+                @if (formulario.get('descripcion')?.touched && formulario.get('descripcion')?.hasError('required')) {
+                  <span style="color: red;">La descripción es obligatoria</span>
+                }
+                @if (formulario.get('descripcion')?.touched && formulario.get('descripcion')?.hasError('pattern')) {
+                  <span style="color: red;">La descripción no puede ser solo espacios</span>
+                }
+          
+                           
+                <label for="imagen">Imagen</label>
+                <input type="file" accept="image/*" 
+                appSoloImagen
+                (imagenValida)="onFileChange($event)"
+                (imagenInvalida)="errorImagen = $event">
+                @if(errorImagen) {
+                    <span style="color: red;">{{ errorImagen }}</span>
+                }
+          
+                <button type="submit">Publicar</button>
+              </form>
+            </div>
+          </div>
+          
+          <div class="pub-orden">
+            <button (click)="cambiarOrden('fecha')">Ordenar por fecha</button>
+            <button (click)="cambiarOrden('likes')">Ordenar por likes</button>
+          </div>
+        
+          <div class="pub-lista">
+              @for (pub of postMongo; track pub._id) {
+                <app-publicaciones-card
+                  [publicacionId]="pub._id"
+                  [titulo]="pub.titulo"
+                  [descripcion]="pub.descripcion"
+                  [nombre]="pub.nombreUsuario"
+                  [fecha]="pub.createdAt"
+                  [cantidadLikes]="pub.cantidadLikes"
+                  [imagenUrl]="pub.imagenUrl ?? ''"
+                  [fotoPerfil]="pub.fotoPerfil ?? ''"
+                  [yaLeDiLike]="pub.likes.includes(usuarioActualId)"
+                  [esMia]="pub.usuarioId === usuarioActualId"
+                  [esAdmin]="esAdmin"
+                  (onLike)="darLike($event)"
+                  (onQuitarLike)="quitarLike($event)" 
+                  (onEliminar)="eliminar($event)"
+                />
+              }
+          </div>
+        
+          @if(mostrarModal) {
+            <div class="vista" (click)="cerrarMensaje()">
+                <div class="modal"  appCerrar (appClickFuera)="cerrarMensaje()">
+                  <p>{{ mensajeModal }}</p>
+                  <button (click)="cerrarMensaje()">Cerrar</button>
+                </div>
+            </div>
+          }
+        
+          <div class="pub-paginacion">
+            <button (click)="anteriorPagina()" [disabled]="!limiteAnterior">Anterior</button>
+            <button (click)="siguientePagina()" [disabled]="!limiteSiguiente">Siguiente</button>
+          </div>
+        </div>
+      </div>
+    }
+
+
+</div>
+

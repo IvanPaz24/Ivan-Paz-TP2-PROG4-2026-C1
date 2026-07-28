@@ -1,0 +1,43 @@
+<div class="perfil-container">
+
+    <div class="dashboard-header">
+        <button class="btn" routerLink="/publicaciones">Atrás</button>
+        <h1 class="dashboard-titulo">Mi perfil</h1>
+    </div>
+
+  @if (usuario) {
+    <div class="perfil-header">
+      <img class="perfil-foto" [src]="usuario.fotoPerfil || 'assets/default-avatar.png'" alt="foto de perfil">
+      <div class="perfil-info">
+        <h1 class="perfil-nombre">{{usuario.nombre}} {{usuario.apellido}}</h1>
+        <p class="perfil-usuario">{{usuario.nombreUsuario}}</p>
+        @if (usuario.descripcion) {
+          <p class="perfil-descripcion">{{usuario.descripcion | capitalizar}}</p>
+        }
+        <p class="perfil-fecha">{{usuario.fechaNacimiento | date:'d MMM yyyy'}}</p>
+      </div>
+    </div>
+  }
+
+  <h2 class="perfil-titulo-publicaciones">Tus publicaciones</h2>
+
+  <div class="perfil-publicaciones">
+    @for (pub of postMongo; track pub._id) {
+      <app-publicaciones-card
+        [publicacionId]="pub._id"
+        [titulo]="pub.titulo"
+        [descripcion]="pub.descripcion"
+        [nombre]="pub.nombreUsuario"
+        [fecha]="pub.createdAt"
+        [cantidadLikes]="pub.cantidadLikes"
+        [imagenUrl]="pub.imagenUrl ?? ''"
+        [yaLeDiLike]="pub.likes.includes(usuarioActualId)"
+        [esMia]="pub.usuarioId === usuarioActualId"
+        (onLike)="darLike($event)"
+        (onQuitarLike)="quitarLike($event)"
+        (onEliminar)="eliminar($event)"
+      />
+    }
+  </div>
+  <button class="btn-subir" (click)="subirArriba()"> <img src="flecha.png" alt=""></button>
+</div>

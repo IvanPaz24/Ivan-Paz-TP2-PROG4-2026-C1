@@ -1,0 +1,214 @@
+<div id="card">
+
+  
+  @if (imagenUrl()) {
+    <img class="card-img" [src]="imagenSegura()" alt="imagen de publicación"
+    (click)="mostrarDetalle = true" style="cursor:pointer">
+  }
+  <div class="card-content">
+
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="card-avatar">
+            @if(fotoPerfil()) {
+              <img class="perfil-foto" [src]="fotoPerfil()" alt="foto de perfil">
+            } @else {
+              <div class="avatar-circle">{{ nombre().charAt(0).toUpperCase() }}</div>
+            }
+          <div>
+            <div class="card-nombre">{{ nombre() }}</div>
+            <div class="card-fecha">{{ fecha() | fecha }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card-titulo" (click)="mostrarDetalle = true" style="cursor:pointer">
+      {{titulo()}}
+    </div>
+  
+    <div class="card-desc">{{descripcion()}}</div>
+
+    <div class="comentarios-container">
+
+      <div class="comentario-form">
+        @for (c of comentariosLista; track c._id) {
+          <div class="comentario-item">
+              @if (comentarioEditandoId() === c._id) {
+              <input 
+                type="text"
+                [value]="comentarioEditandoTexto()"
+                (input)="comentarioEditandoTexto.set($any($event.target).value)"
+                (keydown.enter)="confirmarEdicion()"
+                (keydown.escape)="cancelarEdicion()">
+              <button 
+                (click)="confirmarEdicion()"
+                [disabled]="!comentarioEditandoTexto().trim()">
+                Guardar
+              </button>
+              <button (click)="cancelarEdicion()">Cancelar</button>
+              } @else {
+                @if (c.editado) {
+                  <br>
+                  <span class="comentario-editado">Editado</span>
+                }
+                <br>
+                <span>{{ c.createdAt | fecha }}</span>
+                <br>
+                <span class="comentario-nombre">{{ c.nombreUsuario }}: </span>
+                @if( mostrar ){
+                  <span class="comentario-texto">{{ c.contenido | capitalizar}}</span>
+                }@else{
+                  <span class="comentario-texto">{{ c.contenido | acortador:20 | capitalizar}}</span>
+                }
+                @if (c.usuarioId === usuarioActualId) {
+                  <br>
+                  <button (click)="iniciarEdicion(c)">Editar</button>
+                }
+              }
+          </div>
+        }
+        @if(comentariosLista.length > 0){
+          <button (click)="cargarComentarios()">
+            {{ mostrar? 'Mostrar menos': 'Mostrar mas' }}
+          </button>
+
+        }
+        <br>
+
+        <input 
+          type="text" 
+          placeholder="Escribí un comentario..."
+          [value]="nuevoComentario()"
+          (input)="nuevoComentario.set($any($event.target).value)"
+          (keydown.enter)="crearComentario()">
+        <button 
+          (click)="crearComentario()"
+          [disabled]="!nuevoComentario().trim()">
+          Enviar
+        </button>
+      </div>
+
+    </div>
+    
+  
+    <div class="card-footer">
+      <span class="card-likes">{{cantidadLikes()}} likes</span>
+  
+      <button class="btn-like" [class.activo]="yaLeDiLike()" (click)="darLike()">
+        <img src="croissant.png" alt="like">  
+        {{ yaLeDiLike() ? 'Con medialuna' : 'Sin medialuna' }} 
+      </button>
+  
+      @if (esMia() || esAdmin()) {
+        <button class="btn-eliminar" (click)="eliminar()">Eliminar</button>
+      }
+    </div>
+    
+    @if(mostrarModal) {
+      <div class="vista">
+          <div class="modal" appCerrar (appClickFuera)="cerrarMensaje()">
+            <p>{{ mensajeModal }}</p>
+            <button (click)="cancelarEliminacion()">Cancelar</button>
+            <button (click)="confirmarEliminacion()">Confirmar</button>
+          </div>
+      </div>
+    }
+  </div>
+
+  @if (mostrarDetalle) {
+    <div class="vista-detalle" (click)="mostrarDetalle = false">
+      <div class="modal-detalle" (click)="$event.stopPropagation()">
+        
+        <button class="btn-cerrar" (click)="mostrarDetalle = false">✕</button>
+
+        @if (imagenUrl()) {
+          <div class="detalle-img">
+            <img [src]="imagenSegura()" alt="imagen">
+          </div>
+        }
+
+        <div class="detalle-info">
+          <div class="card-avatar" style="margin-bottom:16px">
+            <div class="avatar-circle">{{ nombre().charAt(0).toUpperCase() }}</div>
+            <div>
+              <div class="card-nombre">{{ nombre() }}</div>
+              <div class="card-fecha">{{ fecha() | fecha }}</div>
+            </div>
+          </div>
+
+          <div class="card-titulo">{{ titulo() | capitalizar }}</div>
+          <div class="card-desc">{{ descripcion() | capitalizar}}</div>
+
+           <div class="comentarios-container">
+            <div class="comentario-form">
+              @for (c of comentariosLista; track c._id) {
+                <div class="comentario-item">
+                  @if (comentarioEditandoId() === c._id) {
+                      <input 
+                          type="text"
+                          [value]="comentarioEditandoTexto()"
+                          (input)="comentarioEditandoTexto.set($any($event.target).value)"
+                          (keydown.enter)="confirmarEdicion()"
+                          (keydown.escape)="cancelarEdicion()">
+                          <button 
+                            (click)="confirmarEdicion()"
+                            [disabled]="!comentarioEditandoTexto().trim()">
+                            Guardar
+                          </button>
+                          <button (click)="cancelarEdicion()">Cancelar</button>
+                  } @else {
+                    @if (c.editado) {
+                      <br>
+                      <span class="comentario-editado">Editado</span>
+                    }
+                    <br>
+                    <span class="comentario-nombre">{{ c.nombreUsuario }}: </span>
+                    @if( mostrar ){
+                      <span class="comentario-texto">{{ c.contenido | capitalizar}}</span>
+                    }@else{
+                      <span class="comentario-texto">{{ c.contenido | acortador:20 | capitalizar}}</span>
+                    }
+                    @if (c.usuarioId === usuarioActualId) {
+                      <br>
+                      <button (click)="iniciarEdicion(c)">Editar</button>
+                    }
+                  }
+                </div>
+              }
+              
+              <button (click)="cargarComentarios()">
+                {{ mostrar? 'Mostrar menos' : 'Mostrar mas' }}
+              </button>
+              <br>
+              <input 
+                type="text" 
+                placeholder="Escribí un comentario..."
+                [value]="nuevoComentario()"
+                (input)="nuevoComentario.set($any($event.target).value)"
+                (keydown.enter)="crearComentario()">
+              <button 
+                (click)="crearComentario()"
+                [disabled]="!nuevoComentario().trim()">
+                Enviar
+              </button>
+            </div>
+          </div>
+
+          <div class="detalle-footer">
+            <span class="card-likes">{{ cantidadLikes() }} likes</span>
+            <button class="btn-like" [class.activo]="yaLeDiLike()" (click)="darLike()">
+              <img src="croissant.png" alt="like">
+              {{ yaLeDiLike() ? 'Con medialuna' : 'Sin medialuna' }}
+            </button>
+            @if (esMia()) {
+              <button class="btn-eliminar" (click)="eliminar()">Eliminar</button>
+            }
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

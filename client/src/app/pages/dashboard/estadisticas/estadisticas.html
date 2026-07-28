@@ -1,0 +1,44 @@
+<div class="estadisticas-container">
+
+    <div class="dashboard-header">
+        <button class="btn" routerLink="/publicaciones">Atrás</button>
+        <h1 class="dashboard-titulo">Dashboard de usuarios</h1>
+    </div>
+
+  <div class="filtro-fechas">
+    <div>
+        <label>Desde</label>
+        <input 
+            type="date" 
+            [value]="desde()"
+            [max]="hoy.toISOString().split('T')[0]"
+            (input)="desde.set($any($event.target).value)">
+    </div>
+    <div>
+        <label>Hasta</label>
+        <input 
+            type="date" 
+            [value]="hasta()"
+            [max]="hoy.toISOString().split('T')[0]"
+            (input)="hasta.set($any($event.target).value)">
+    </div>
+    <button (click)="cargarGraficos()">Actualizar</button>
+  </div>
+
+  <div class="graficos-grid">
+    <div class="grafico-card">
+      <h2>Publicaciones por usuario</h2>
+      <canvas #chartPubUsuario></canvas>
+    </div>
+
+    <div class="grafico-card">
+      <h2>Comentarios por día</h2>
+      <canvas #chartComentariosTiempo></canvas>
+    </div>
+
+    <div class="grafico-card">
+      <h2>Comentarios por publicación</h2>
+      <canvas #chartComentariosPub></canvas>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+.estadisticas-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.dashboard-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    justify-content: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.dashboard-titulo {
+    font-family: 'Georgia', serif;
+    color: var(--marron-oscuro);
+    font-size: 28px;
+    border-bottom: 2px dashed var(--marron-claro);
+    padding-bottom: 12px;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+
+.btn{
+    /* width: 1%; */
+    padding: 12px;
+    background: var(--marron);
+    color: var(--blanco-calido);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 2px;
+    margin-bottom: 16px;
+    
+}
+
+
+.filtro-fechas {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  background: var(--blanco-calido);
+  border: 1px solid var(--marron-claro);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.filtro-fechas label {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.filtro-fechas input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid var(--marron-claro);
+  border-radius: 8px;
+  background: var(--beige);
+  color: var(--texto);
+  font-size: 14px;
+  outline: none;
+}
+
+.filtro-fechas button {
+  padding: 9px 24px;
+  background: var(--marron);
+  color: var(--blanco-calido);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: fit-content;
+}
+
+.filtro-fechas button:hover {
+  background: var(--marron-oscuro);
+}
+
+.graficos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.grafico-card {
+  background: var(--blanco-calido);
+  border: 1px solid var(--marron-claro);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(107, 79, 47, 0.08);
+}
+
+.grafico-card:last-child {
+  grid-column: 1 / -1;
+}
+
+.grafico-card h2 {
+  font-family: 'Georgia', serif;
+  color: var(--marron-oscuro);
+  font-size: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--marron-claro);
+  padding-bottom: 8px;
+}
+
+.grafico-card canvas {
+  max-width: 200%;
+  max-height: 300px;         
+  width: 200%;
+  height: 400px;   
+  display: block;
+  margin: 0 auto;
+}
